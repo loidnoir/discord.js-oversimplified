@@ -16,8 +16,6 @@ export default class Button extends Component<ButtonInteraction> {
     }
 
     getData() {
-        if (!this.id) return undefined
-
         const button = new ButtonBuilder()
             .setCustomId(this.id)
             .setLabel(this.preferences.label)
