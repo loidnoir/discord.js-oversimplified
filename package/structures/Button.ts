@@ -1,29 +1,18 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle, ComponentEmojiResolvable } from "discord.js"
-import { v4 } from 'uuid'
 import Client from "./Client"
+import Component, { ComponentLimits } from "./Component"
 
-export default class Button {
-    public id?: string
+export default class Button extends Component<ButtonInteraction> {
     public preferences: ButtonPreferences
-    public options: ButtonOptions
-    public logic?: (client: Client, interaction: ButtonInteraction) => void
-    public createdAt: number
-    public usageAmount: number
 
-    constructor(client: Client, options: ButtonOptions, preferences: ButtonPreferences) {
-        const idFlags = `${options.durationSec && options.durationSec > 0 ? 't' : 'n'}${options.maxUsage && options.maxUsage > 0 ? 'd' : 'n'}`
-        this.id = idFlags + v4()
-
+    constructor(client: Client, preferences: ButtonPreferences, limits?: ComponentLimits) {
+        super(limits)
         this.preferences = preferences
-        this.options = options
-        this.createdAt = Date.now()
-        this.usageAmount = 0
-
-        client.buttons.set(this.id, this)
+        client.components.set(this.id, this)
     }
 
     setLogic(logic: (client: Client, interaction: ButtonInteraction) => void) {
-        this.logic = logic
+        super.setLogic(logic)
     }
 
     getData() {
@@ -60,10 +49,4 @@ interface ButtonPreferences {
     emoji?: ComponentEmojiResolvable
     disabled?: boolean
     url?: string
-    guildOnly?: boolean
-}
-
-interface ButtonOptions {
-    durationSec?: number
-    maxUsage?: number
 }
