@@ -1,6 +1,6 @@
 {
   "name": "@loidnoir/discordjs-components",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "description": "Powerful package to quickly utilize discord.js components",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
