@@ -1,8 +1,9 @@
-import { AnySelectMenuInteraction, ButtonInteraction, Interaction as DjsInteraction, ModalSubmitInteraction } from "discord.js";
+import { ButtonInteraction, Interaction as DjsInteraction, ModalSubmitInteraction } from "discord.js";
 import { v4 } from "uuid";
 import Client from "./Client";
+import { SelectMenuTypes } from "./SelectMenu";
 
-export default class Component<T extends ComponentTypes> {
+export default class Component<T extends ComponentTypes<unknown>> {
     public id: string
     public limits: ComponentLimits
     public createdAt: number
@@ -34,4 +35,4 @@ export interface ComponentErrors {
     undefinedError?: (client: Client, interaction: DjsInteraction) => void
 }
 
-export type ComponentTypes = ButtonInteraction | AnySelectMenuInteraction | ModalSubmitInteraction
+export type ComponentTypes<T> = ButtonInteraction | SelectMenuTypes<T> | ModalSubmitInteraction
