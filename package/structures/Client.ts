@@ -14,7 +14,12 @@ export default class Client extends DjsClient {
         })
     }
 
-    private handleButtons(interaction: ButtonInteraction, handleTimeError?: (client: Client, interaction: ButtonInteraction) => void, handleUsageLimitError?: (client: Client, interaction: ButtonInteraction) => void) {
+    private handleButtons(
+        interaction: ButtonInteraction,
+        handleTimeError?: InteractionHandleSettings['buttonDurationError'],
+        handleUsageLimitError?: InteractionHandleSettings['buttonMaxUsageError'],
+        handleError?: InteractionHandleSettings['buttonError'])
+    {
         const button = this.buttons.find(button => button.id == interaction.customId)
 
         if (button) {
@@ -57,11 +62,21 @@ export default class Client extends DjsClient {
                     interaction.reply({ content: 'Interaction is out of max usage', ephemeral: true })
                 }
             }
+
+            else {
+                if (handleError) {
+                    handleError(this, interaction)
+                }
+                else {
+                    interaction.reply({ content: 'Interaction expired', ephemeral: true })
+                }
+            }
         }
     }
 }
 
 interface InteractionHandleSettings {
     buttonDurationError?: (client: Client, interaction: ButtonInteraction) => void,
-    buttonMaxUsageError?: (client: Client, interaction: ButtonInteraction) => void
+    buttonMaxUsageError?: (client: Client, interaction: ButtonInteraction) => void,
+    buttonError?: (client: Client, interaction: ButtonInteraction) => void
 }

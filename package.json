@@ -6,8 +6,9 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "repository": {
-    "url": "https://github.com/loidnoir/discord.js-components"
+    "url": "https://github.com/loidnoir/discordjs-components"
   },
+  "keywords": ["discord", "djs", "discordjs", "discord.js", "discord components", "discord.js components"],
   "scripts": {
     "build": "tsup"
   },
@@ -22,5 +23,6 @@
   "dependencies": {
     "discord.js": "^14.15.3",
     "uuid": "^10.0.0"
-  }
+  },
+  "private": false
 }
