@@ -1,21 +1,22 @@
-import { StringSelectMenuBuilder, StringSelectMenuInteraction, StringSelectMenuOptionBuilder } from "discord.js";
+import { User, UserSelectMenuBuilder, UserSelectMenuInteraction } from "discord.js";
 import Client from "./Client";
 import { ComponentLimits } from "./Component";
 import SelectMenu, { SelectMenuPreferences, SelectMenuTypes } from "./SelectMenu";
 
-export default class StringSelectMenu extends SelectMenu<StringSelectMenuOptionBuilder, SelectMenuPreferences> {
+export default class UserSelectMenu extends SelectMenu<string, SelectMenuPreferences> {
     constructor(client: Client, preferences?: SelectMenuPreferences, limits?: ComponentLimits) {
         super(client, preferences, limits)
     }
 
-    public addOptions(...options: StringSelectMenuOptionBuilder[]) {
+    public addDefaultUsers(...options: User[] | string[]) {
         for (const option of options) {
-            this.options.push(option)
+            if (typeof option == 'string') this.options.push(option)
+            else this.options.push(option.id)
         }
     }
 
     public getData() {
-        const selectMenu = new StringSelectMenuBuilder()
+        const selectMenu = new UserSelectMenuBuilder()
             .setCustomId(this.id)
 
         if (this.preferences?.disabled) {
@@ -34,12 +35,14 @@ export default class StringSelectMenu extends SelectMenu<StringSelectMenuOptionB
             selectMenu.setPlaceholder(this.preferences.placeholder)
         }
 
-        selectMenu.addOptions(this.options)
+        if (this.options.length > 0) {
+            selectMenu.addDefaultUsers(this.options)
+        }
 
         return selectMenu
     }
 
-    setLogic(logic: (client: Client, interaction: SelectMenuTypes<StringSelectMenuInteraction>) => void): void {
+    setLogic(logic: (client: Client, interaction: SelectMenuTypes<UserSelectMenuInteraction>) => void): void {
         super.setLogic(logic)
     }
 }

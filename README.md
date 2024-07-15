@@ -15,7 +15,7 @@ Example with a button.
 ```ts
 const { Button } = require('discord.js-components')
 
-const button = new Button('Button label')
+const button = new Button(client, { label: 'Button label' })
 
 button.setLogic(() => (client, interaction) => {
     interaction.reply('So simple!')
@@ -25,5 +25,5 @@ button.setLogic(() => (client, interaction) => {
 ## Roadmap
 
 - [X] Buttons
-- [ ] Select menus
+- [X] Select menus
 - [ ] Modals

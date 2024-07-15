@@ -2,11 +2,11 @@ import { ChannelSelectMenuInteraction, RoleSelectMenuInteraction, StringSelectMe
 import Client from "./Client"
 import Component, { ComponentLimits } from "./Component"
 
-export default class SelectMenu<T, P> extends Component<SelectMenuTypes<T>> {
-    public preferences?: P
+export default class SelectMenu<T, C> extends Component<SelectMenuTypes<T>> {
+    public preferences?: C
     protected options: T[] = []
 
-    constructor(client: Client, preferences?: P, limits?: ComponentLimits) {
+    constructor(client: Client, preferences?: C, limits?: ComponentLimits) {
         super(limits)
         this.preferences = preferences
         client.components.set(this.id, this)
@@ -20,7 +20,8 @@ export default class SelectMenu<T, P> extends Component<SelectMenuTypes<T>> {
 export interface SelectMenuPreferences {
     maxValues?: number,
     minValues?: number,
-    disabled?: boolean
+    disabled?: boolean,
+    placeholder?: string
 }
 
 export type SelectMenuTypes<T> = StringSelectMenuInteraction | UserSelectMenuInteraction | ChannelSelectMenuInteraction | RoleSelectMenuInteraction

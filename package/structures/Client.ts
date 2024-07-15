@@ -14,13 +14,6 @@ export default class Client extends DjsClient {
                 const component = this.components.get(interaction.customId)
                 
                 if (component) {
-                    if (component.limits.maxDurationSec) {
-                        const now = Date.now()
-                        console.log((component.createdAt + (1000 * component.limits.maxDurationSec)) - now)
-                        console.log('Expiration date ', (component.createdAt + (1000 * component.limits.maxDurationSec)))
-                        console.log('Now date ', now)
-                    }
-
                     if (component.limits.maxUsageAmount && component.usageCount >= component.limits.maxUsageAmount) {
                         if (interaction.customId[1] == 'd') {
                             if (settings?.maxUsageError) settings?.maxUsageError(this, interaction)
