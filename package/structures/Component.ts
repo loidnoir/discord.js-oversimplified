@@ -1,22 +1,20 @@
 import { AnySelectMenuInteraction, ButtonBuilder, ButtonInteraction, ChannelSelectMenuBuilder, ChannelSelectMenuInteraction, ModalBuilder, ModalSubmitInteraction, RoleSelectMenuBuilder, RoleSelectMenuInteraction, SelectMenuBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction, UserSelectMenuBuilder, UserSelectMenuInteraction } from 'discord.js';
 import Client from './Client';
 
-export default class Component<ComponentType extends ComponentTypes> {
+export default class Component<BuilderType extends BuilderTypes> {
     public client: Client
-    public component: ComponentType
-    public customId: string
-    public logic?: LogicType<InteractionType<ComponentType>>
+    public interactionId: string
+    public logic?: LogicType<InteractionTypeFromBuilder<BuilderType>>
     private createdAt: number
     private maxUsageAmount: number
     private usageAmount: number
     private durationInSeconds: number
 
-    constructor(client: Client, component: ComponentType, customId: string) {
+    public constructor(client: Client, interactionId: string) {
         this.client = client
-        this.component = component
-        this.customId = customId
+        this.interactionId = interactionId
 
-        const duplicateComponent = client.components.get(customId)
+        const duplicateComponent = client.components.get(interactionId)
 
         if (duplicateComponent) {
             this.createdAt = duplicateComponent.createdAt
@@ -30,20 +28,20 @@ export default class Component<ComponentType extends ComponentTypes> {
             this.usageAmount = 0
             this.durationInSeconds = 0
             this.maxUsageAmount = 0
-            client.components.set(customId, this)
+            client.components.set(interactionId, this)
         }
     }
 
-    public execute(logic: LogicType<InteractionType<ComponentType>>): void {
+    public execute(logic: LogicType<InteractionTypeFromBuilder<BuilderType>>): void {
         this.logic = logic
     }
 
-    public setMaxDuration(durationInSeconds: number): Component<ComponentType> {
+    public setMaxDuration(durationInSeconds: number): Component<BuilderType> {
         this.durationInSeconds = durationInSeconds
         return this
     }
 
-    public setMaxUsageAmount(maxUsageAmount: number): Component<ComponentType> {
+    public setMaxUsageAmount(maxUsageAmount: number): Component<BuilderType> {
         this.maxUsageAmount = maxUsageAmount
         return this
     }
@@ -59,20 +57,31 @@ export default class Component<ComponentType extends ComponentTypes> {
     }
 
     public delete(): void {
-        this.client.components.delete(this.customId)
+        this.client.components.delete(this.interactionId)
     }
 }
 
-export type LogicType<InteractionType> = (client: Client, interaction: InteractionType) => void
+export type LogicType<InteractionType extends InteractionTypes> = (client: Client, interaction: InteractionType) => void
 
-export type ComponentTypes = ButtonBuilder | SelectMenuBuilder | ModalBuilder
+export type BuilderTypes = ButtonBuilder | SelectMenuBuilder | ModalBuilder
+export type InteractionTypes = ButtonInteraction | AnySelectMenuInteraction | ModalSubmitInteraction
 
-export type InteractionType<ComponentType> =
-    ComponentType extends ButtonBuilder ? ButtonInteraction :
-    ComponentType extends StringSelectMenuBuilder ? StringSelectMenuInteraction :
-    ComponentType extends UserSelectMenuBuilder ? UserSelectMenuInteraction :
-    ComponentType extends RoleSelectMenuBuilder ? RoleSelectMenuInteraction :
-    ComponentType extends ChannelSelectMenuBuilder ? ChannelSelectMenuInteraction :
-    ComponentType extends SelectMenuBuilder ? AnySelectMenuInteraction :
-    ComponentType extends ModalBuilder ? ModalSubmitInteraction :
+export type BuilderTypeFromInteraction<InteractionType extends InteractionTypes> =
+    InteractionType extends ChannelSelectMenuInteraction ? ChannelSelectMenuBuilder :
+    InteractionType extends StringSelectMenuInteraction ? StringSelectMenuBuilder :
+    InteractionType extends UserSelectMenuInteraction ? UserSelectMenuBuilder :
+    InteractionType extends RoleSelectMenuInteraction ? RoleSelectMenuBuilder :
+    InteractionType extends AnySelectMenuInteraction ? SelectMenuBuilder :
+    InteractionType extends ModalSubmitInteraction ? ModalBuilder :
+    InteractionType extends ButtonInteraction ? ButtonBuilder :
+    never
+
+export type InteractionTypeFromBuilder<BuilderType extends BuilderTypes> =
+    BuilderType extends ChannelSelectMenuBuilder ? ChannelSelectMenuInteraction :
+    BuilderType extends StringSelectMenuBuilder ? StringSelectMenuInteraction :
+    BuilderType extends UserSelectMenuBuilder ? UserSelectMenuInteraction :
+    BuilderType extends RoleSelectMenuBuilder ? RoleSelectMenuInteraction :
+    BuilderType extends SelectMenuBuilder ? AnySelectMenuInteraction :
+    BuilderType extends ModalBuilder ? ModalSubmitInteraction :
+    BuilderType extends ButtonBuilder ? ButtonInteraction :
     never

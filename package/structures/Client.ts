@@ -1,5 +1,5 @@
 import { ClientOptions, Collection, Client as DjsClient } from 'discord.js';
-import Component, { LogicType } from './Component';
+import Component, { InteractionTypes, LogicType } from './Component';
 
 
 export default class Client extends DjsClient {
@@ -9,7 +9,7 @@ export default class Client extends DjsClient {
         super(options)
     }
 
-    public handleComponents(error?: LogicType<unknown>): void {
+    public handleComponents(error?: LogicType<InteractionTypes>): void {
         this.on('interactionCreate', (interaction) => {
             if (
                 interaction.isButton() ||
@@ -22,7 +22,6 @@ export default class Client extends DjsClient {
                     if (component.isExpired()) {
                         if (error) error(this, interaction)
                         else interaction.reply({ content: 'Interaction expired', ephemeral: true })
-                        component.delete()
                     }
 
                     else {
