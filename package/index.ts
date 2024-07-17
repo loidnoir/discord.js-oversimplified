@@ -1,7 +1,4 @@
-import Button from "./structures/Button";
-import Client from "./structures/Client";
-import StringSelectMenu from './structures/StringSelectMenu';
-import UserSelectMenu from './structures/UserSelectMenu';
+import Client from './structures/Client'
+import Component from './structures/Component'
 
-export { Button, Client, StringSelectMenu, UserSelectMenu };
-
+export { Client, Component }

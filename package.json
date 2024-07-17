@@ -1,6 +1,6 @@
 {
   "name": "@loidnoir/discordjs-components",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Powerful package to quickly utilize discord.js components",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -8,21 +8,26 @@
   "repository": {
     "url": "https://github.com/loidnoir/discordjs-components"
   },
-  "keywords": ["discord", "djs", "discordjs", "discord.js", "discord components", "discord.js components"],
+  "keywords": [
+    "discord",
+    "djs",
+    "discordjs",
+    "discord.js",
+    "discord components",
+    "discord.js components"
+  ],
   "scripts": {
     "build": "tsup"
   },
   "author": "Loid",
   "license": "MIT",
   "devDependencies": {
-    "@types/uuid": "^10.0.0",
     "dotenv": "^16.4.5",
     "tsup": "^8.1.0",
     "typescript": "^5.5.3"
   },
   "dependencies": {
-    "discord.js": "^14.15.3",
-    "uuid": "^10.0.0"
+    "discord.js": "^14.15.3"
   },
   "private": false
 }
