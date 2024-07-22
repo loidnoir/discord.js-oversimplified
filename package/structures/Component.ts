@@ -4,7 +4,7 @@ import Client from './Client';
 export default class Component<BuilderType extends BuilderTypes> {
     public client: Client
     public interactionId: string
-    public logic?: LogicType<InteractionTypeFromBuilder<BuilderType>>
+    public logic?: ComponentLogicType<InteractionTypeFromBuilder<BuilderType>>
     private createdAt: number
     private maxUsageAmount: number
     private usageAmount: number
@@ -32,7 +32,7 @@ export default class Component<BuilderType extends BuilderTypes> {
         }
     }
 
-    public execute(logic: LogicType<InteractionTypeFromBuilder<BuilderType>>): void {
+    public setLogic(logic: ComponentLogicType<InteractionTypeFromBuilder<BuilderType>>): void {
         this.logic = logic
     }
 
@@ -61,22 +61,12 @@ export default class Component<BuilderType extends BuilderTypes> {
     }
 }
 
-export type LogicType<InteractionType extends InteractionTypes> = (client: Client, interaction: InteractionType) => void
+export type ComponentLogicType<InteractionType extends ComponentInteractionTypes> = (client: Client, interaction: InteractionType) => void
+export type ComponentInteractionTypes = ButtonInteraction | AnySelectMenuInteraction | ModalSubmitInteraction
 
-export type BuilderTypes = ButtonBuilder | SelectMenuBuilder | ModalBuilder
-export type InteractionTypes = ButtonInteraction | AnySelectMenuInteraction | ModalSubmitInteraction
+type BuilderTypes = ButtonBuilder | SelectMenuBuilder | ModalBuilder
 
-export type BuilderTypeFromInteraction<InteractionType extends InteractionTypes> =
-    InteractionType extends ChannelSelectMenuInteraction ? ChannelSelectMenuBuilder :
-    InteractionType extends StringSelectMenuInteraction ? StringSelectMenuBuilder :
-    InteractionType extends UserSelectMenuInteraction ? UserSelectMenuBuilder :
-    InteractionType extends RoleSelectMenuInteraction ? RoleSelectMenuBuilder :
-    InteractionType extends AnySelectMenuInteraction ? SelectMenuBuilder :
-    InteractionType extends ModalSubmitInteraction ? ModalBuilder :
-    InteractionType extends ButtonInteraction ? ButtonBuilder :
-    never
-
-export type InteractionTypeFromBuilder<BuilderType extends BuilderTypes> =
+type InteractionTypeFromBuilder<BuilderType extends BuilderTypes> =
     BuilderType extends ChannelSelectMenuBuilder ? ChannelSelectMenuInteraction :
     BuilderType extends StringSelectMenuBuilder ? StringSelectMenuInteraction :
     BuilderType extends UserSelectMenuBuilder ? UserSelectMenuInteraction :
@@ -85,3 +75,13 @@ export type InteractionTypeFromBuilder<BuilderType extends BuilderTypes> =
     BuilderType extends ModalBuilder ? ModalSubmitInteraction :
     BuilderType extends ButtonBuilder ? ButtonInteraction :
     never
+
+type BuilderTypeFromInteraction<InteractionType extends ComponentInteractionTypes> =
+    InteractionType extends ChannelSelectMenuInteraction ? ChannelSelectMenuBuilder :
+    InteractionType extends StringSelectMenuInteraction ? StringSelectMenuBuilder :
+    InteractionType extends UserSelectMenuInteraction ? UserSelectMenuBuilder :
+    InteractionType extends RoleSelectMenuInteraction ? RoleSelectMenuBuilder :
+    InteractionType extends AnySelectMenuInteraction ? SelectMenuBuilder :
+    InteractionType extends ModalSubmitInteraction ? ModalBuilder :
+    InteractionType extends ButtonInteraction ? ButtonBuilder :
+    never;

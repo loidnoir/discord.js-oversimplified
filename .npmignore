@@ -2,6 +2,7 @@
 /node_modules
 /tests
 
+.vscode
 .env
 .DS_Store
 
