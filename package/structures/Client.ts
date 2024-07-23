@@ -1,16 +1,19 @@
-import { ClientOptions, Collection, Client as DjsClient } from 'discord.js';
+import { ClientEvents, ClientOptions, Collection, Client as DjsClient } from 'discord.js';
 import fs from 'fs';
 import path from 'path';
 import Command, { CommandBuilderTypes, CommandInteractionTypes } from './Command';
 import Component, { ComponentInteractionTypes } from './Component';
+import Event from './Event';
 
 export default class Client extends DjsClient {
     private commandsPath?: string
+    private eventsPath?: string
 
     components: Collection<string, Component<any>> = new Collection()
     commands: Collection<string, Command<any>> = new Collection()
+    events: Collection<string, Event<keyof ClientEvents>> = new Collection() 
+    
     cooldowns: Collection<string, number> = new Collection()
-
     cooldownError?: CooldownError
     componentError?: ComponentError
     commandError?: CommandError
@@ -35,12 +38,20 @@ export default class Client extends DjsClient {
         this.commandsPath = path
     }
 
-    public handle() {
+    public enableEvents(path: string) {
+        this.eventsPath = path
+    }
+
+    public login(token?: string) {
+        if (this.eventsPath) this.loadEvents()
+
         this.once('ready', () => this.commandsPath ? this.loadCommands() : null)
         this.on('interactionCreate', (interaction) => {
             if (interaction.isButton() || interaction.isAnySelectMenu() || interaction.isModalSubmit()) this.handleComponents(interaction)
             else if (interaction.isCommand() && this.commandsPath) this.handleCommands(interaction)
         })
+        
+        return super.login(token)
     }
 
     private async loadCommands(): Promise<void> {
@@ -75,7 +86,36 @@ export default class Client extends DjsClient {
 
                     else {
                         this.application?.commands.create(command.data)
-                        console.log(command.data.name)
+                    }
+                }
+            }
+        }
+    }
+
+    private async loadEvents(): Promise<void> {
+        const stack = [this.eventsPath]
+
+        while (stack.length > 0) {
+            const currentPath = stack.pop()
+            const entries = fs.readdirSync(currentPath!, { withFileTypes: true })
+
+            for (const entry of entries) {
+                const fullPath = path.join(currentPath!, entry.name)
+
+                if (entry.isDirectory()) {
+                    stack.push(fullPath)
+                }
+                
+                else if (entry.isFile()) {
+                    const event: Event<keyof ClientEvents> = (await import(fullPath)).default
+
+                    if (event) {
+                        if (event.once) this.once(event.event, (...args) => {
+                            if (event.logic) event.logic(this, ...args)
+                        })
+                        else this.on(event.event, (...args) => {
+                            if (event.logic) event.logic(this, ...args)
+                        })
                     }
                 }
             }
