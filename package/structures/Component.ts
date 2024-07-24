@@ -32,8 +32,9 @@ export default class Component<BuilderType extends BuilderTypes> {
         }
     }
 
-    public setLogic(logic: ComponentLogicType<InteractionTypeFromBuilder<BuilderType>>): void {
+    public setLogic(logic: ComponentLogicType<InteractionTypeFromBuilder<BuilderType>>): Component<BuilderType> {
         this.logic = logic
+        return this
     }
 
     public setMaxDuration(durationInSeconds: number): Component<BuilderType> {
@@ -52,8 +53,9 @@ export default class Component<BuilderType extends BuilderTypes> {
         return false
     }
 
-    public addUsage(amount: number): void {
+    public addUsage(amount: number): Component<BuilderType> {
         this.usageAmount += amount
+        return this
     }
 
     public delete(): void {

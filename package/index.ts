@@ -1,7 +1,8 @@
-import Client from './structures/Client';
-import Command from './structures/Command';
-import Component from './structures/Component';
-import Event from './structures/Event';
+import ButtonBuilder from './builders/ButtonBuilder'
+import Client from './structures/Client'
+import Command from './structures/Command'
+import Component from './structures/Component'
+import Event from './structures/Event'
 
-export { Client, Command, Component, Event };
+export { ButtonBuilder, Client, Command, Component, Event }
 
