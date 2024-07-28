@@ -1,6 +1,6 @@
 {
-  "name": "@loidnoir/discordjs-components",
-  "version": "0.3.1",
+  "name": "discord.js-oversimplified",
+  "version": "0.3.2",
   "description": "Powerful package to quickly utilize discord.js components",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -10,11 +10,9 @@
   },
   "keywords": [
     "discord",
-    "djs",
-    "discordjs",
-    "discord.js",
-    "discord components",
-    "discord.js components"
+    "framework",
+    "bot",
+    "handler"
   ],
   "scripts": {
     "build": "tsup"
