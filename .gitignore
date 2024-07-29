@@ -1,8 +1,13 @@
+website/.next
+website/node_modules
+
 /dist
 /node_modules
 /tests
 
+package-lock.json
+yarn.lock
+
 .vscode
 .env
 .DS_Store
-package-lock.json

@@ -1,0 +1,74 @@
+Let's first ensure we have the package successfully installed.
+
+```sh npm2yarn
+npm i discord.js-oversimplified
+```
+
+## Client setup
+
+```ts filename="index.ts"
+import { Client } from 'discord.js-oversimplified'
+import path from 'path'
+
+const client = new Client()
+
+// Define the path for both commands and events
+const commandPath = path.join(__dirname, '/commands')
+const eventPath = path.join(__dirname, '/events')
+
+client.enableEvents(eventPath)
+client.enableCommands(commandPath)
+client.login(process.env.TOKEN)
+```
+
+## Event creation
+
+Let's log `Bot ready!` when bot goes online.
+
+```ts filename="events/ready.ts"
+import { Event } from 'discord.js-oversimplified'
+
+const ready = new Event('ready')
+    .setLogic((client) => {
+        console.log('Bot ready!')
+    })
+    .setOnce(true)
+
+export default ready
+```
+
+## Command creation
+
+Our handler supports both slash and context commands, so let's create a simple command and handle button logic.
+
+```ts filename="commands/ping.ts"
+import { Command, ButtonBuilder, Component } from 'discord.js-oversimplified';
+import { ActionRowBuilder, MessageActionRowComponentBuilder, SlashCommandBuilder } from 'discord.js'
+
+const pingCommand = new Command<SlashCommandBuilder>()
+    .setData(
+        new SlashCommandBuilder()
+            .setName('ping')
+            .setDescription('Ping command')
+    )
+    .setLogic((client, interaction) => {
+        const customId = `ping-${interaction.user.id}`
+
+        const button = new ButtonBuilder()
+            .setCustomId(customId)
+            .setLabel('Ping!')
+
+        const actionRow = new ActionRowBuilder<MessageActionRowComponentBuilder>()
+            .addComponents([button])
+        
+        const component = new Component<ButtonBuilder>(client, customId)
+            .setMaxUsageAmount(1)
+            .setLogic((client, int) => {
+                int.update({ content: 'Pong!', components: [] })
+            })
+
+        interaction.reply({ content: 'Press the button', components: [actionRow] })
+    })
+
+export default pingCommand
+```
