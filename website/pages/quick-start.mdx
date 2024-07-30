@@ -4,7 +4,7 @@ Let's first ensure we have the package successfully installed.
 npm i discord.js-oversimplified
 ```
 
-## Client setup
+Now let's setup the client.
 
 ```ts filename="index.ts"
 import { Client } from 'discord.js-oversimplified'
@@ -21,25 +21,21 @@ client.enableCommands(commandPath)
 client.login(process.env.TOKEN)
 ```
 
-## Event creation
-
-Let's log `Bot ready!` when bot goes online.
+Let's log `Bot ready!` when bot goes online by registering new event.
 
 ```ts filename="events/ready.ts"
 import { Event } from 'discord.js-oversimplified'
 
 const ready = new Event('ready')
+    .setOnce(true)
     .setLogic((client) => {
         console.log('Bot ready!')
     })
-    .setOnce(true)
 
 export default ready
 ```
 
-## Command creation
-
-Our handler supports both slash and context commands, so let's create a simple command and handle button logic.
+Let's define a simple slash command and handle button logic.
 
 ```ts filename="commands/ping.ts"
 import { Command, ButtonBuilder, Component } from 'discord.js-oversimplified';

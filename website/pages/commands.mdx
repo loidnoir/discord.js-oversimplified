@@ -1,0 +1,14 @@
+Our command handler is a file-based system for creating commands. This approach streamlines the process of adding new commands, making it more easy, efficient and organized.
+
+```ts filename="index.ts"
+import { Client } from 'discord.js-oversimplified'
+import path from 'path'
+
+const client = new Client()
+const commandPath = path.join(__dirname, '/commands')
+
+client.enableCommands(commandPath)
+client.login("...")
+```
+
+### Command class

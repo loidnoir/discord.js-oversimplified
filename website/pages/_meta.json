@@ -2,7 +2,14 @@
   "index": {
     "title": "Introduction"
   },
-  "quick_start": {
+  "quick-start": {
     "title": "Quick start"
+  },
+  "-- Handlers": {
+    "type": "separator",
+    "title": "Handlers"
+  },
+  "commands": {
+    "title": "Commands"
   }
 }
