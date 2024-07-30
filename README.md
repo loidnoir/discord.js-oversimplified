@@ -1,12 +1,8 @@
-[![NPM](https://img.shields.io/badge/Get%20on%20NPM-v0.3.1-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/discord.js-oversimplified)
-
-# discord.js oversimplified
+# Discord.js Oversimplified
 
 A powerful, fully typed Discord.js framework that make you focus on what matters.
 
-## Quick Start
-
-```bash
+```sh
 npm i discord.js-oversimplified
 ```
 
@@ -16,3 +12,7 @@ npm i discord.js-oversimplified
 - [X] Command and event handlers
 - [x] Autocomplete support
 - [ ] Documentation page
+
+## Get support
+
+Join our [Discord community](https://discord.gg/8MKgEdZKmj) to get your questions resolved.
