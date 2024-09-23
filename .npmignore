@@ -1,11 +1,15 @@
-/package
+/src
 /website
 /node_modules
-/tests
+/testing
 
 .vscode
 .env
 .DS_Store
+.prettierrc
+.eslintrc.json
+.gitignore
 
+package-lock.json
 tsconfig.json
 tsup.config.ts

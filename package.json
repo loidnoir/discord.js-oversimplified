@@ -1,31 +1,37 @@
 {
-  "name": "discord.js-oversimplified",
-  "version": "0.3.2",
-  "description": "Powerful package to quickly utilize discord.js components",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "repository": {
-    "url": "https://github.com/loidnoir/discordjs-components"
-  },
-  "keywords": [
-    "discord",
-    "framework",
-    "bot",
-    "handler"
-  ],
-  "scripts": {
-    "build": "tsup"
-  },
-  "author": "Loid",
-  "license": "MIT",
-  "devDependencies": {
-    "dotenv": "^16.4.5",
-    "tsup": "^8.1.0",
-    "typescript": "^5.5.3"
-  },
-  "dependencies": {
-    "discord.js": "^14.15.3"
-  },
-  "private": false
+    "name": "discord.js-oversimplified",
+    "version": "0.4.0",
+    "description": "Powerful package to quickly utilize discord.js components",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "repository": {
+        "url": "https://github.com/loidnoir/discordjs-components"
+    },
+    "keywords": [
+        "discord",
+        "framework",
+        "bot",
+        "handler"
+    ],
+    "scripts": {
+        "build": "tsup && cd testing && bun run --watch src/bot.ts"
+    },
+    "author": "Loid",
+    "license": "MIT",
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^7.18.0",
+        "@typescript-eslint/parser": "^7.18.0",
+        "dotenv": "^16.4.5",
+        "eslint": "^8.57.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-prettier": "^5.2.1",
+        "prettier": "^3.3.3",
+        "tsup": "^8.1.0",
+        "typescript": "^5.5.3"
+    },
+    "dependencies": {
+        "discord.js": "^14.15.3"
+    },
+    "private": false
 }

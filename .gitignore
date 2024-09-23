@@ -3,7 +3,7 @@ website/node_modules
 
 /dist
 /node_modules
-/tests
+/testing
 
 package-lock.json
 yarn.lock

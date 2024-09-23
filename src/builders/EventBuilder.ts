@@ -1,7 +1,7 @@
-import { ClientEvents } from "discord.js";
-import Client from './Client';
+import { ClientEvents } from 'discord.js'
+import Client from '../structures/Client'
 
-export default class Event<EventType extends keyof ClientEvents>{
+export default class EventBuilder<EventType extends keyof ClientEvents> {
     public event: EventType
     public once: boolean = false
     public logic?: EventLogic<EventType>
@@ -22,8 +22,3 @@ export default class Event<EventType extends keyof ClientEvents>{
 }
 
 type EventLogic<EventType extends keyof ClientEvents> = (client: Client, ...args: ClientEvents[EventType]) => void
-
-let a = new Event("interactionCreate")
-    .setLogic((client, int) => {
-        return
-    })
